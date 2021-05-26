@@ -92,8 +92,7 @@ namespace TSI.FourSeries.PresetManagement
            
             if (!root.presets.Count.Equals(0))
             {
-                //create empty event args of type pwListCodeEventArgs
-                PresetListLoadedEventArgs args = new PresetListLoadedEventArgs();
+                
 
                 CrestronConsole.PrintLine("root.presets.count if");
                 try
@@ -101,19 +100,19 @@ namespace TSI.FourSeries.PresetManagement
                     //for loop to iterate through passwords
                     for (int i = 0; i < root.presets.Count; i++)
                     {
-                        CrestronConsole.PrintLine("for loop");
-                        //CrestronConsole.PrintLine("root.presets[{0}].name: {1}", i, root.presets[i].name);
-                        //CrestronConsole.PrintLine("root.presets[{0}].number: {1}", i, root.presets[i].number);
-                        args.names[i] = root.presets[i].name;
-                        args.numbers[i] = root.presets[i].number;
-                    }
+                        //create empty event args of type pwListCodeEventArgs
+                        PresetListLoadedEventArgs args = new PresetListLoadedEventArgs()
+                        {
+                            presetindex = (ushort)(i + 1),
+                            presetname = root.presets[i].name,
+                            presetnumber = root.presets[i].number,
+                        };
 
-                    args.listCount = (ushort)root.presets.Count;
-
-                    if (!PresetListLoadedEventToCall.Equals(null))
-                    {
-                        CrestronConsole.PrintLine("null check");
-                        PresetListLoadedEventToCall(this, args);
+                        if (!PresetListLoadedEventToCall.Equals(null))
+                        {
+                            CrestronConsole.PrintLine("null check");
+                            PresetListLoadedEventToCall(this, args);
+                        }
                     }
                 }
                 catch (Exception e)

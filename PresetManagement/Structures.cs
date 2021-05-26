@@ -22,9 +22,9 @@ namespace TSI.FourSeries.PresetManagement
 
     public class PresetListLoadedEventArgs : EventArgs
     {
-        public string[] names { get; set; }
-        public string[] numbers  { get; set; }
-        public ushort listCount { get; set; }
+        public ushort presetindex { get; set; }
+        public string presetname { get; set; }
+        public string presetnumber  { get; set; }
     }
 
 }
