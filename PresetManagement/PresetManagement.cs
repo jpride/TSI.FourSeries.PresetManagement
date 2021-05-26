@@ -10,9 +10,6 @@ namespace TSI.FourSeries.PresetManagement
     {
         Root root = new Root();
         FileOperations fileOps = new FileOperations();
-
-        public List<Preset> managedList = new List<Preset>();
-
         string filecontents;
         string _filelocation;
 
@@ -63,7 +60,7 @@ namespace TSI.FourSeries.PresetManagement
 
         }
 
-        //deserialize the json file into the roomObject class
+        //deserialize the json file into the root class
         private void DeserializeJSON()
         {
             try
@@ -71,8 +68,6 @@ namespace TSI.FourSeries.PresetManagement
                 if (!filecontents.Equals(String.Empty) && !filecontents.Equals(null))
                 {
                     root = JsonConvert.DeserializeObject<Root>(filecontents);
-                    //CrestronConsole.PrintLine("root: {0}", root.ToString());
-                    //CrestronConsole.PrintLine("root.presets[0].name: {0}", root.presets[0].name);
                     GetPresetListFromFile();
                 }
                 else
@@ -87,14 +82,12 @@ namespace TSI.FourSeries.PresetManagement
             }
         }
 
+        //loop thru presets and create events for each one. each event triggers 
         private void GetPresetListFromFile()
         {
-           
             if (!root.presets.Count.Equals(0))
             {
                 
-
-                CrestronConsole.PrintLine("root.presets.count if");
                 try
                 {
                     //for loop to iterate through passwords
@@ -110,7 +103,6 @@ namespace TSI.FourSeries.PresetManagement
 
                         if (!PresetListLoadedEventToCall.Equals(null))
                         {
-                            CrestronConsole.PrintLine("null check");
                             PresetListLoadedEventToCall(this, args);
                         }
                     }
