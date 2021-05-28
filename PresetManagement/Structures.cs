@@ -12,6 +12,7 @@ namespace TSI.FourSeries.PresetManagement
     {
         public string name { get; set; }
         public string number { get; set; }
+        public string band { get; set; }
     }
 
     public class Root
@@ -25,6 +26,7 @@ namespace TSI.FourSeries.PresetManagement
         public ushort presetindex { get; set; }
         public string presetname { get; set; }
         public string presetnumber  { get; set; }
+        public string presetband { get; set; }
     }
 
 }

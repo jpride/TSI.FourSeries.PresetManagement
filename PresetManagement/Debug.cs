@@ -8,6 +8,6 @@ namespace TSI.FourSeries.PresetManagement
 {
     class Debug
     {
-        public static bool debugEnable = true;
+        public static bool debugEnable = false;
     }
 }

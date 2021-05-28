@@ -18,14 +18,14 @@ namespace TSI.FourSeries.PresetManagement
         public const string ErrorWritingJsonToFile = "UpdateJSON - Exception writing to file: {0}";
 
         public const string JsonUpdateMessage = "JSON: {0}";
-        public const string AddingPasswordToListNotice = "Adding Password!";
+      //  public const string AddingPasswordToListNotice = "Adding Password!";
 
         public const string FileNotFoundMessage = "FileOperations.ReadFile() | Error: File Not Found!";
         public const string WriteFilePayloadReport = "FileOperations.WriteFile() | Message: payload written to file: {0}";
         public const string WriteFileExceptionStackTrace = "FileOperations.WriteFile() | Exception: {0}";
 
         public const string GetPresetListFromFileExceptionStackTrace = "GetPresetListFromFile Exception: {0}";
-        public const string PasswordListObjectInitializeExceptionMessage = "PasswordListObject.Initialize() | {0}";
+        public const string InitializeExceptionMessage = "PasswordListObject.Initialize() | {0}";
 
     }
 }
