@@ -112,7 +112,6 @@
         /// </summary>
         public void WriteLocalListToFile()
         {
-
             var UpdatedJson = JsonConvert.SerializeObject(_displayPresetListObj);
             FileOperations.WriteFile(_filelocation, UpdatedJson);
         }
