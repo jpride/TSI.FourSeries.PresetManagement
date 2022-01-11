@@ -1,16 +1,16 @@
 ﻿namespace TSI.FourSeries.DisplayPresetManagement
 {
-    using System;
     using Crestron.SimplSharp;
     using Newtonsoft.Json;
-    
+    using System;
+
 
     public class DisplayPresetManagement
     {
-        private Root root = new Root();
+        private DisplayPresetListObject _displayPresetListObj = new DisplayPresetListObject();
 
-        private string filecontents;
-        private string filelocation;
+        private string _filecontents;
+        private string _filelocation;
 
 
         /// <summary>
@@ -30,8 +30,8 @@
         /// </summary>
         public string FileLocation
         {
-            get { return this.filelocation; }
-            set { this.filelocation = value; }
+            get { return this._filelocation; }
+            set { this._filelocation = value; }
         }
 
         /// <summary>
@@ -39,14 +39,14 @@
         /// </summary>
         public void Initialize()
         {
-            if (FileOperations.CheckFileExists(filelocation))
+            if (FileOperations.CheckFileExists(_filelocation))
             {
-                filecontents = FileOperations.ReadFile(filelocation);
-                CrestronConsole.PrintLine("fileContents: {0}", filecontents.ToString());
+                _filecontents = FileOperations.ReadFile(_filelocation);
+                CrestronConsole.PrintLine("fileContents: {0}", _filecontents.ToString());
             }
             else
             {
-                if (Debug.debugEnable) CrestronConsole.PrintLine(Constants.FileNotFoundCreatingNewFileMessage, filelocation);
+                if (Debug.debugEnable) CrestronConsole.PrintLine(Constants.FileNotFoundCreatingNewFileMessage, _filelocation);
 
                 //create a default json string
                 try
@@ -55,10 +55,10 @@
                     if (Debug.debugEnable) CrestronConsole.PrintLine(jsonTemplate);
 
                     //Write default string to file
-                    FileOperations.WriteFile(filelocation, jsonTemplate);
+                    FileOperations.WriteFile(_filelocation, jsonTemplate);
 
                     //Read file
-                    filecontents = FileOperations.ReadFile(filelocation);
+                    _filecontents = FileOperations.ReadFile(_filelocation);
 
                 }
                 catch (Exception ex)
@@ -68,8 +68,6 @@
             }
 
             DeserializeJSON();
-            
-
         }
 
         public void SetDebug(ushort flag)
@@ -82,24 +80,25 @@
         /// OverwritePreset will overwrite the preset info for a given index.
         /// WriteLocalListToFile() will write the updated preset list to the file.
         /// </summary>
-        public void OverwritePreset(ushort index, string newInput, ushort newStream, string newChannel)
+        public void OverwritePreset(ushort index, string newInput, ushort newStream, string newChannelNumber,string newChannelName)
         {
             Preset preset = new Preset()
             {
                 input = newInput,
                 stream = newStream,
-                channel = newChannel
+                channelNumber = newChannelNumber,
+                channelName = newChannelName
             };
 
             try
             {
-                if (index < root.presets.Count)
+                if (index < _displayPresetListObj.PresetList.Count)
                 {
-                    root.presets[index] = preset;
+                    _displayPresetListObj.PresetList[index] = preset;
                 }
                 else
                 {
-                    root.presets.Add(preset);
+                    _displayPresetListObj.PresetList.Add(preset);
                 }
             }
             catch (Exception e)
@@ -114,8 +113,8 @@
         public void WriteLocalListToFile()
         {
 
-            var UpdatedJson = JsonConvert.SerializeObject(root);
-            FileOperations.WriteFile(filelocation, UpdatedJson);
+            var UpdatedJson = JsonConvert.SerializeObject(_displayPresetListObj);
+            FileOperations.WriteFile(_filelocation, UpdatedJson);
         }
 
         /// <summary>
@@ -126,9 +125,9 @@
         {
             try
             {
-                if (!filecontents.Equals(String.Empty) && !filecontents.Equals(null))
+                if (!_filecontents.Equals(String.Empty) && !_filecontents.Equals(null))
                 {
-                    root = JsonConvert.DeserializeObject<Root>(filecontents);
+                    _displayPresetListObj = JsonConvert.DeserializeObject<DisplayPresetListObject>(_filecontents);
                     GetPresetListFromFile();
                 }
                 else
@@ -138,8 +137,8 @@
             }
             catch (Exception e)
             {
-                ErrorLog.Error(Constants.ErrorConvertingFileContentsMessage, filecontents, e.Message);
-                CrestronConsole.PrintLine(Constants.ErrorConvertingFileContentsMessage, filecontents, e.Message);
+                ErrorLog.Error(Constants.ErrorConvertingFileContentsMessage, _filecontents, e.Message);
+                CrestronConsole.PrintLine(Constants.ErrorConvertingFileContentsMessage, _filecontents, e.Message);
             }
         }
 
@@ -151,20 +150,21 @@
         private void GetPresetListFromFile()
         {
 
-            if (!root.presets.Count.Equals(0))
+            if (!_displayPresetListObj.PresetList.Count.Equals(0))
             {
                 try
                 {
                     //for loop to iterate through presets
-                    for (int i = 0; i < root.presets.Count; i++)
+                    for (int i = 0; i < _displayPresetListObj.PresetList.Count; i++)
                     {
                         //create empty event args of type pwListCodeEventArgs
                         PresetListLoadedEventArgs args = new PresetListLoadedEventArgs()
                         {
                             presetindex = (ushort)(i + 1),
-                            presetinput = root.presets[i].input,
-                            presetstream = root.presets[i].stream,
-                            presetchannel = root.presets[i].channel
+                            presetinput = _displayPresetListObj.PresetList[i].input,
+                            presetstream = _displayPresetListObj.PresetList[i].stream,
+                            presetchannelnumber = _displayPresetListObj.PresetList[i].channelNumber,
+                            presetchannelname = _displayPresetListObj.PresetList[i].channelName
                         };
 
                         //call eventhandler

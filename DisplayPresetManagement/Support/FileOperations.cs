@@ -12,7 +12,6 @@
 
         public static Boolean CheckFileExists(string filePath)
         {
-            //lock (_lockingVar)
             _csection.Enter();
 
             try
@@ -30,8 +29,6 @@
             {
                 _csection.Leave();
             }
-    
-            
         }
 
         public static string ReadFile(string filePath)
@@ -39,6 +36,7 @@
             string fileContents;
 
             _csection.Enter();
+
             try
             {
                 if (File.Exists(filePath))
