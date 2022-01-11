@@ -12,10 +12,11 @@
 
         public static Boolean CheckFileExists(string filePath)
         {
-            _csection.Enter();
-
+            
             try
             {
+                _csection.Enter();
+
                 if (File.Exists(filePath))
                 {
                     return true;
@@ -35,10 +36,9 @@
         {
             string fileContents;
 
-            _csection.Enter();
-
             try
             {
+                _csection.Enter();
                 if (File.Exists(filePath))
                 {
                     fileContents = File.ReadToEnd(filePath, Encoding.ASCII);
@@ -60,10 +60,9 @@
         {
             FileStream fs = new FileStream(filePath, FileMode.Create);
 
-            _csection.Enter();
-
             try
             {
+                _csection.Enter();
                 fs.Write(payload, Encoding.UTF8);
                 if (Debug.debugEnable) CrestronConsole.PrintLine(Constants.WriteFilePayloadReport, payload);
             }
