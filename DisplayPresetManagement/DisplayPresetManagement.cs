@@ -24,6 +24,9 @@
         // This is the event to raise when a preset is parsed out. Simpl+ is monitoring this event
         public event EventHandler<PresetListLoadedEventArgs> PresetListLoadedEventToCall;
 
+        //This is an event to raise when the File is found to exist. 
+        public event EventHandler<EventArgs> FileExistsEvent;
+
 
         /// <summary>
         /// Gets or Sets FileLocation
@@ -43,6 +46,14 @@
             {
                 _filecontents = FileOperations.ReadFile(_filelocation);
                 CrestronConsole.PrintLine("fileContents: {0}", _filecontents.ToString());
+
+                EventArgs args = new EventArgs(); //empty eventargs var
+
+                //call eventhandler
+                if (!FileExistsEvent.Equals(null))
+                {
+                    FileExistsEvent(this, args);
+                }
             }
             else
             {
@@ -58,7 +69,10 @@
                     FileOperations.WriteFile(_filelocation, jsonTemplate);
 
                     //Read file
-                    _filecontents = FileOperations.ReadFile(_filelocation);
+                    //_filecontents = FileOperations.ReadFile(_filelocation);
+
+                    //instead of reading from file, just get the string that was just written directly
+                    _filecontents = jsonTemplate;
 
                 }
                 catch (Exception ex)

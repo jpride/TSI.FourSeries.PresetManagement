@@ -8,17 +8,19 @@
 
     public class FileOperations
     {
-        private static CCriticalSection _csection = new CCriticalSection();
+        private static CCriticalSection _fileLock = new CCriticalSection();
+        public static Boolean fileExists = false;
 
-        public static Boolean CheckFileExists(string filePath)
+        public static bool CheckFileExists(string filePath)
         {
             
             try
             {
-                _csection.Enter();
+                _fileLock.Enter();
 
                 if (File.Exists(filePath))
                 {
+                    fileExists = true;
                     return true;
                 }
                 else
@@ -28,7 +30,7 @@
             }
             finally
             {
-                _csection.Leave();
+                _fileLock.Leave();
             }
         }
 
@@ -38,7 +40,7 @@
 
             try
             {
-                _csection.Enter();
+                _fileLock.Enter();
                 if (File.Exists(filePath))
                 {
                     fileContents = File.ReadToEnd(filePath, Encoding.ASCII);
@@ -52,7 +54,7 @@
             }
             finally
             {
-                _csection.Leave();
+                _fileLock.Leave();
             }
         }
 
@@ -62,7 +64,7 @@
 
             try
             {
-                _csection.Enter();
+                _fileLock.Enter();
                 fs.Write(payload, Encoding.UTF8);
                 if (Debug.debugEnable) CrestronConsole.PrintLine(Constants.WriteFilePayloadReport, payload);
             }
@@ -74,7 +76,7 @@
             finally
             {
                 fs.Close();
-                _csection.Leave();
+                _fileLock.Leave();
             }
         }
 

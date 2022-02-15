@@ -6,10 +6,10 @@
         public const string FileNotFoundCreatingNewFileMessage = "File not found @ {0}";
         public const string StaticFileContentsNoticeMessage = "FileContents: {0}";
 
-        public const string DefaultFileContents = "{\"presets\":[{\"input\":\"catv\",\"stream\":111,\"channel\":\"12\"}]}";
+        public const string DefaultFileContents = "{\"presets\":[{\"input\":\"nvx\",\"stream\":1,\"channelNumber\":\"1\",\"channelName\":\"channel 1\"}]}";
         
         public const string NothingToDeserializeMessage = "Nothing to deserialize";
-        public const string ErrorConvertingFileContentsMessage = "Error Converting File contents to RootObject. FileContents: {0} | Error Message:  {1}";
+        public const string ErrorConvertingFileContentsMessage = "Error Converting File contents to DisplayPresetListObject. FileContents: {0} | Error Message:  {1}";
         public const string ErrorWritingJsonToFile = "UpdateJSON - Exception writing to file: {0}";
 
         public const string JsonUpdateMessage = "JSON: {0}";
